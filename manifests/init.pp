@@ -5,51 +5,58 @@ class stack_puppet (
   $puppet_install                   = false,
   $puppet_run_mode                  = 'manual',
   $puppet_config_template           = 'stack_puppet/puppet/puppet.conf',
-  $puppet_config_hash               = { },
+  $puppet_options_hash               = { },
 
   $puppetdb_install                 = false,
   $puppetdb_config_template         = 'stack_puppet/puppetdb/puppetdb.conf',
-  $puppetdb_config_hash             = { },
+  $puppetdb_options_hash             = { },
 
   $postgresql_install               = false,
   $postgresql_config_template       = 'stack_puppet/postgresql/postgresql.conf',
-  $postgresql_config_hash           = { },
+  $postgresql_options_hash           = { },
 
   $puppetmaster_install             = false,
   $puppetmaster_proxy               = 'passenger',
   $puppetmaster_config_template     = 'stack_puppet/puppetmaster/puppet.conf',
-  $puppetmaster_config_hash         = { },
+  $puppetmaster_options_hash         = { },
 
   $mcollective_install              = false,
   $mcollective_config_template      = 'stack_puppet/mcollective/mcollective.conf',
-  $mcollective_config_hash          = { },
+  $mcollective_options_hash          = { },
 
   $activemq_install                 = false,
   $activemq_config_template         = 'stack_puppet/activemq/activemq.conf',
-  $activemq_config_hash             = { },
+  $activemq_options_hash             = { },
 
   $mco_install                      = false,
   $mco_config_template              = 'stack_puppet/mco/mco.conf',
-  $mco_config_hash                  = { },
+  $mco_options_hash                  = { },
 
   $mysql_install                    = false,
   $mysql_config_template            = '',
-  $mysql_config_hash                = { },
+  $mysql_options_hash                = { },
 
   $foreman_install                  = false,
   $foreman_config_template          = 'stack_puppet/foreman/foreman.conf',
-  $foreman_config_hash              = { },
+  $foreman_options_hash              = { },
 
   $foremanproxy_install             = false,
   $foremanproxy_config_template     = 'stack_puppet/foremanproxy/foremanproxy.conf',
-  $foremanproxy_config_hash         = { },
+  $foremanproxy_options_hash         = { },
 
   $puppetdashboard_install          = false,
   $puppetdashboard_config_template  = 'stack_puppet/puppetdashboard/puppetdashboard.conf',
-  $puppetdashboard_config_hash      = { },
+  $puppetdashboard_options_hash      = { },
 
   ) {
 
+  # TODO: Create default templates
+  # TODO: Provide defaults for options_hash
+  # TODO: Complete with all classes and defines
+  # TODO: Define the parmaters to expose and to use
+  # TODO: Define the application modules to use
+
+  # TODO: Test if this puppetdbquery thing works
   $puppetmaster_servers = query_nodes('Class[puppet::server]')
   $puppetmaster_servers_ip = query_nodes('Class[puppet::server]', ipaddress)
 
@@ -57,14 +64,15 @@ class stack_puppet (
   $puppetdb_servers = query_nodes('Class[puppetdb]')
   $puppetdb_servers_ip = query_nodes('Class[puppetdb', ipaddress)
 
-  # TOFIX: More robust real (and only) puppet related activemq servers recognition
+  # TODO: More robust real (and only) puppet related activemq servers recognition
   $activemq_servers = query_nodes('Class[activemq]')
   $activemq_servers_ip = query_nodes('Class[activemq', ipaddress)
 
   $foremanproxy_servers = query_nodes('Class[foremanproxy]')
   $foremanproxy_servers_ip = query_nodes('Class[foremanproxy]' ipaddress)
 
-  # TOFIX: Review inclusion logic to allow proper removal of previously declared classes
+
+  # TODO: Review inclusion logic to allow proper removal of previously declared classes
   if $puppet_install {
     class { 'puppet':
       run_mode      => $puppet_run_mode,
@@ -72,7 +80,7 @@ class stack_puppet (
     }
   }
 
-  # TOFIX: Decide if and how to expose credentials params
+  # TODO: Decide if and how to expose credentials params
   if $mcollective_install {
     class { 'mcollective':
       template      => $mcollective_config_template,
